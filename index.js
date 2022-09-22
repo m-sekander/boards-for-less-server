@@ -8,6 +8,9 @@ app.use(express.json());
 const cors = require("cors");
 app.use(cors());
 
+const authRoute = require('./routes/authRoute');
+app.use('/auth', authRoute);
+
 
 app.listen(PORT, () => {
     console.log("Backend server is running at port:" , PORT);
