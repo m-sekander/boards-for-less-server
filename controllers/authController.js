@@ -53,6 +53,10 @@ exports.signup = (req, res) => {
 exports.login = (req, res) => {
     const { email, password } = req.body;
 
+    if (!email || !password) {
+        return res.status(400).json({message: "Please make sure to provide all fields in the request", requiredFields: ["email", "password"]});
+    }
+
     knex("users")
     .where({ email })
     .then((result) => {
