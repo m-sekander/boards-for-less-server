@@ -5,14 +5,10 @@ exports.up = function(knex) {
         table.string('name').notNullable();
         table.string('password').notNullable();
         table.string('address').notNullable();
-        table.string('coordinates').notNullable().defaultTo('TBD');
+        table.string('coordinates').notNullable();
     })
 };
 
-/**
- * @param { import("knex").Knex } knex
- * @returns { Promise<void> }
- */
 exports.down = function(knex) {
     return knex.schema.dropTable('users')
 };

@@ -7,7 +7,7 @@ module.exports = [
         coordinates: "43.8899858, -79.4569183",
     },
     {
-        email: "tester@test.com",
+        email: "test@test.com",
         name: "Tester",
         password: "$2b$10$OV33Ti28q2fBlWFi6NAs3OEHsAwYuJTBAiPhSXBqYeUSdsw3NuUo2",
         address: "460 King St W, Toronto, ON M5V 1L7",

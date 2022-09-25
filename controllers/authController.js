@@ -20,7 +20,8 @@ exports.authorize = (req, res, next) => {
 }
 
 exports.signup = (req, res) => {
-    const { email, name, password, confirmPassword, address, coordinates } = req.body;
+    const email = req.body.email.toLowerCase();
+    const { name, password, confirmPassword, address, coordinates } = req.body;
     
     if (!email || !name || !password || !confirmPassword || !address || !coordinates) {
         return res.status(400).json({message: "Please make sure to provide all fields in the request", requiredFields: ["email", "name", "password", "confirmPassword", "address", "coordinates"], data: req.body});
@@ -51,7 +52,8 @@ exports.signup = (req, res) => {
 }
 
 exports.login = (req, res) => {
-    const { email, password } = req.body;
+    const email = req.body.email.toLowerCase();
+    const { password } = req.body;
 
     if (!email || !password) {
         return res.status(400).json({message: "Please make sure to provide all fields in the request", requiredFields: ["email", "password"]});
