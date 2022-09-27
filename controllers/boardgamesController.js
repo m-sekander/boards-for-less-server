@@ -109,3 +109,18 @@ exports.retrieveNamedListings = (req, res) => {
         return res.status(500).json({message: `Unable to get nearby ${boardgameName} listings at the moment`, error});
     })
 }
+
+exports.retrieveUserListings = (req, res) => {
+    const { email } = req;
+
+    knex("boardgames")
+    .where({user_email: email})
+    .then((result) => {
+        if (result.length === 0) {
+            return res.status(404).json({message: "User currently has no board game listings"})
+        }
+        return res.json({message: "User's board game listings retrieved successfully", result});
+    }).catch((error) => {
+        return res.status(500).json({message: "Unable to get user's board game listings at the moment", error});
+    })
+}

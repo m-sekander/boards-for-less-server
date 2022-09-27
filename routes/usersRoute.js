@@ -1,8 +1,10 @@
 const express = require('express');
-const { authorize } = require('../controllers/authController');
 const router = express.Router();
 
-const usersController = require('../controllers/usersController')
+const { authorize } = require('../controllers/authController');
+const usersController = require('../controllers/usersController');
+
+router.get('/', authorize, usersController.userDetails);
 
 router.get('/name', authorize, usersController.displayName);
 
