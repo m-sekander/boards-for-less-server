@@ -4,6 +4,7 @@ exports.displayName = (req, res) => {
     const {email} = req;
 
     knex("users")
+    .select("name")
     .where({ email })
     .then((result) => {
         if (result.length === 0) {

@@ -60,6 +60,7 @@ exports.login = (req, res) => {
     }
 
     knex("users")
+    .select("email", "password")
     .where({ email })
     .then((result) => {
         const user = result[0];

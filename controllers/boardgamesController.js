@@ -2,10 +2,6 @@ const knex = require('knex')(require("../knexfile"));
 
 const validator = require('validator');
 
-exports.helloWorld = (req, res) => {
-    res.json({message: "Hello World!"});
-}
-
 exports.listGame = (req, res) => {
     const { email } = req;
     const { name, category, minPlayers, maxPlayers, minAge, avgPlay, description, price, availableUntil } = req.body;
@@ -51,5 +47,65 @@ exports.listGame = (req, res) => {
         })
     }).catch((error) => {
         return res.status(500).json({message: "Unable to list board game at the moment", error});
+    })
+}
+
+exports.retrieveListings = (req, res) => {
+    const { email } = req;
+    const userLat = req.query.lat;
+    const userLng = req.query.lng;
+
+    function distCalculator(lat1, lng1, lat2, lng2) {
+        return Math.hypot((lat1-lat2), (lng1-lng2))
+    }
+
+    knex("boardgames")
+    .whereNot({user_email: email})
+    .join("users", "user_email", "=", "email")
+    .select("boardgames.*", "address", "coordinates")
+    .then((result) => {
+        if (result.length === 0) {
+            return res.status(404).json({message: "No board games listings are available at the moment, check again later"})
+        }
+        const sortedBoardgames = result.sort((a, b) => {
+            const aCoordinates = a.coordinates.split(",");
+            const bCoordinates = b.coordinates.split(",");
+            return distCalculator(userLat, userLng, aCoordinates[0], aCoordinates[1]) - distCalculator(userLat, userLng, bCoordinates[0], bCoordinates[1]);
+        })
+        return res.json({message: "Board game listings retrieved successfully", sortedBoardgames});
+    }).catch((error) => {
+        return res.status(500).json({message: "Unable to get nearby board game listings at the moment", error});
+    })
+}
+
+exports.retrieveNamedListings = (req, res) => {
+    const { email } = req;
+    const userLat = req.query.lat;
+    const userLng = req.query.lng;
+
+    let { boardgameName } = req.params;
+    boardgameName = boardgameName.replaceAll("+", " ");
+
+    function distCalculator(lat1, lng1, lat2, lng2) {
+        return Math.hypot((lat1-lat2), (lng1-lng2))
+    }
+
+    knex("boardgames")
+    .whereNot({user_email: email})
+    .where({"boardgames.name": boardgameName})
+    .join("users", "user_email", "=", "email")
+    .select("boardgames.*", "address", "coordinates")
+    .then((result) => {
+        if (result.length === 0) {
+            return res.status(404).json({message: `No ${boardgameName} listings are available at the moment, check again later`})
+        }
+        const sortedBoardgames = result.sort((a, b) => {
+            const aCoordinates = a.coordinates.split(",");
+            const bCoordinates = b.coordinates.split(",");
+            return distCalculator(userLat, userLng, aCoordinates[0], aCoordinates[1]) - distCalculator(userLat, userLng, bCoordinates[0], bCoordinates[1]);
+        })
+        return res.json({message: `${boardgameName} listings retrieved successfully`, sortedBoardgames});
+    }).catch((error) => {
+        return res.status(500).json({message: `Unable to get nearby ${boardgameName} listings at the moment`, error});
     })
 }
