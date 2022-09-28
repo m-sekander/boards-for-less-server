@@ -13,5 +13,9 @@ router.get('/user', authorize, boardgamesController.retrieveUserListings);
 
 router.get('/:boardgameName', authorize, boardgamesController.retrieveNamedListings);
 
+router.get('/details/:boardgameId', authorize, boardgamesController.retrieveSpecificListing);
+
+router.delete('/:boardgameId', authorize, boardgamesController.deleteSpecificListing);
+
 
 module.exports = router;

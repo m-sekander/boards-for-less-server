@@ -124,3 +124,56 @@ exports.retrieveUserListings = (req, res) => {
         return res.status(500).json({message: "Unable to get user's board game listings at the moment", error});
     })
 }
+
+exports.retrieveSpecificListing = (req, res) => {
+    const { email } = req;
+    const { boardgameId } = req.params;
+    const { ownerEmail }= req.query;
+
+    if (ownerEmail !== "undefined") {
+        knex("boardgames")
+        .where({email: ownerEmail})
+        .where({"boardgames.id": boardgameId})
+        .join("users", "user_email", "=", "email")
+        .select("boardgames.*", "users.name", "address")
+        .then((result) => {
+            if (result.length === 0) {
+                return res.status(404).json({message: `The listing requested does not exist`})
+            }
+            return res.json({message: `The listing was retrieved successfully`, result});
+        }).catch((error) => {
+            return res.status(500).json({message: `Unable to get the listing at the moment`, error});
+        })
+    } else {
+        knex("boardgames")
+        .where({email: email})
+        .where({"boardgames.id": boardgameId})
+        .join("users", "user_email", "=", "email")
+        .select("boardgames.*", "users.name", "address")
+        .then((result) => {
+            if (result.length === 0) {
+                return res.status(404).json({message: `The listing requested does not exist`})
+            }
+            return res.json({message: `The listing was retrieved successfully`, result});
+        }).catch((error) => {
+            return res.status(500).json({message: `Unable to get the listing at the moment`, error});
+        })
+    }
+}
+
+exports.deleteSpecificListing = (req, res) => {
+    const { email } = req;
+    const { boardgameId } = req.params;
+
+    knex("boardgames")
+    .where({id: boardgameId, user_email: email})
+    .del()
+    .then((result) => {
+        if (result === 0) {
+            return res.status(404).json({message: `The listing to be deleted does not exist`})
+        }
+        return json.status(204).send();
+    }).catch((error) => {
+        return res.status(500).json({message: `Unable to delete listing at the moment`, error});
+    });
+}
