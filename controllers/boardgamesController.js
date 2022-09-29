@@ -181,14 +181,3 @@ exports.deleteSpecificListing = (req, res) => {
         return res.status(500).json({message: `Unable to delete listing at the moment`, error});
     });
 }
-
-exports.getAll = (req, res) => {
-    knex("users")
-    .then((result) => {
-        console.log(result);
-        res.json(result);
-    }).catch((error) => {
-        console.log(error);
-        res.json(error);
-    })
-}
