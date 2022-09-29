@@ -25,13 +25,17 @@ exports.listGame = (req, res) => {
         return res.status(400).json({message: "Please enter a valid dollar amount for price"});
     }
 
+    if (minPlayers > maxPlayers) {
+        return res.status(400).json({message: "Minimum players cannot be less than maximum players"})
+    }
+
     const today = new Date();
     let minDate = new Date();
-    minDate.setDate(today.getDate() + 7);
+    minDate.setDate(today.getDate() + 6);
     if (new Date(availableUntil) < today) {
         return res.status(400).json({message: "Cannot set date to the past"});
     } else if (new Date(availableUntil) < minDate) {
-        return res.status(400).json({message: "Minimum availability must be atleast 1 week"});
+        return res.status(400).json({message: "Minimum date availability must be over 1 week from now"});
     }
 
     
@@ -72,7 +76,7 @@ exports.retrieveListings = (req, res) => {
             const bCoordinates = b.coordinates.split(",");
             return distCalculator(userLat, userLng, aCoordinates[0], aCoordinates[1]) - distCalculator(userLat, userLng, bCoordinates[0], bCoordinates[1]);
         })
-        return res.json({message: "Board game listings retrieved successfully", sortedBoardgames});
+        return res.json({message: "Board game listings retrieved successfully", sortedBoardgames: sortedBoardgames.slice(0, 10)});
     }).catch((error) => {
         return res.status(500).json({message: "Unable to get nearby board game listings at the moment", error});
     })
@@ -104,7 +108,7 @@ exports.retrieveNamedListings = (req, res) => {
             const bCoordinates = b.coordinates.split(",");
             return distCalculator(userLat, userLng, aCoordinates[0], aCoordinates[1]) - distCalculator(userLat, userLng, bCoordinates[0], bCoordinates[1]);
         })
-        return res.json({message: `${boardgameName} listings retrieved successfully`, sortedBoardgames});
+        return res.json({message: `${boardgameName} listings retrieved successfully`, sortedBoardgames: sortedBoardgames.slice(0, 10)});
     }).catch((error) => {
         return res.status(500).json({message: `Unable to get nearby ${boardgameName} listings at the moment`, error});
     })
