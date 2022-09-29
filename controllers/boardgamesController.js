@@ -25,8 +25,8 @@ exports.listGame = (req, res) => {
         return res.status(400).json({message: "Please enter a valid dollar amount for price"});
     }
 
-    if (minPlayers > maxPlayers) {
-        return res.status(400).json({message: "Minimum players cannot be less than maximum players"})
+    if (Number(minPlayers) > Number(maxPlayers)) {
+        return res.status(400).json({message: "Minimum players cannot be greater than maximum players"})
     }
 
     const today = new Date();
@@ -76,7 +76,7 @@ exports.retrieveListings = (req, res) => {
             const bCoordinates = b.coordinates.split(",");
             return distCalculator(userLat, userLng, aCoordinates[0], aCoordinates[1]) - distCalculator(userLat, userLng, bCoordinates[0], bCoordinates[1]);
         })
-        return res.json({message: "Board game listings retrieved successfully", sortedBoardgames: sortedBoardgames.slice(0, 10)});
+        return res.json({message: "Board game listings retrieved successfully", sortedBoardgames: sortedBoardgames});
     }).catch((error) => {
         return res.status(500).json({message: "Unable to get nearby board game listings at the moment", error});
     })
@@ -180,4 +180,15 @@ exports.deleteSpecificListing = (req, res) => {
     }).catch((error) => {
         return res.status(500).json({message: `Unable to delete listing at the moment`, error});
     });
+}
+
+exports.getAll = (req, res) => {
+    knex("users")
+    .then((result) => {
+        console.log(result);
+        res.json(result);
+    }).catch((error) => {
+        console.log(error);
+        res.json(error);
+    })
 }
