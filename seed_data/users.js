@@ -8,7 +8,7 @@ module.exports = [
     {
         email: "barbar123@yahoo.ca",
         name: "Barry Benson",
-        password: hashedPassword("rootroot"),
+        password: hashedPassword("test"),
         address: "421 Wellington St W, Toronto, ON M5V 1E7",
         coordinates: "43.643720,-79.395810",
     },
