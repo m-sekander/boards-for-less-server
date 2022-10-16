@@ -17,6 +17,10 @@ app.use('/users', usersRoute);
 const boardgamesRoute = require('./routes/boardgamesRoute');
 app.use('/boardgames', boardgamesRoute);
 
+app.get('/', (_req, res) => {
+    return res.send("Server is running...");
+});
+
 
 app.listen(PORT, () => {
     console.log("Backend server is running at port:" , PORT);
