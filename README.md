@@ -31,4 +31,4 @@ API and the map technology of Google Maps Platform API, users can use the site s
 
 ## Feedback & Support
 
-If you have any feedback or require support, please reach out to me at moinuddin8510@gmail.com or on [LinkedIn](https://www.linkedin.com/in/moinsekander/)
+If you have any feedback or require support, please reach out to me at my [email](moinuddin8510@gmail.com) or on [LinkedIn](https://www.linkedin.com/in/moinsekander/).
