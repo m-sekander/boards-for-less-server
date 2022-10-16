@@ -2,10 +2,16 @@ const knex = require('knex')(require("../knexfile"));
 
 const validator = require('validator');
 
+// rough distance calculation using Pythagorean theorem
+function distCalculator(lat1, lng1, lat2, lng2) {
+    return Math.hypot((lat1-lat2), (lng1-lng2))
+}
+
 exports.listGame = (req, res) => {
     const { email } = req;
     const { name, category, minPlayers, maxPlayers, minAge, avgPlay, description, price, availableUntil } = req.body;
 
+    // validation checks
     if (!name || !category || !minPlayers || !maxPlayers || !minAge || !avgPlay || !description || !price || !availableUntil) {
         return res.status(400).json({message: "Please make sure to provide all fields in the request", requiredFields: ["name", "category", "minPlayers", "maxPlayers", "minAge", "avgPlay", "description", "price", "availableUntil"], data: req.body});
     }
@@ -59,9 +65,6 @@ exports.retrieveListings = (req, res) => {
     const userLat = req.query.lat;
     const userLng = req.query.lng;
 
-    function distCalculator(lat1, lng1, lat2, lng2) {
-        return Math.hypot((lat1-lat2), (lng1-lng2))
-    }
 
     knex("boardgames")
     .whereNot({user_email: email})
@@ -71,6 +74,7 @@ exports.retrieveListings = (req, res) => {
         if (result.length === 0) {
             return res.status(404).json({message: "No board games listings are available at the moment, check again later"})
         }
+        // sorts board game listings closest to further from user that requested it
         const sortedBoardgames = result.sort((a, b) => {
             const aCoordinates = a.coordinates.split(",");
             const bCoordinates = b.coordinates.split(",");
@@ -90,9 +94,6 @@ exports.retrieveNamedListings = (req, res) => {
     let { boardgameName } = req.params;
     boardgameName = boardgameName.replaceAll("+", " ");
 
-    function distCalculator(lat1, lng1, lat2, lng2) {
-        return Math.hypot((lat1-lat2), (lng1-lng2))
-    }
 
     knex("boardgames")
     .whereNot({user_email: email})
@@ -103,6 +104,7 @@ exports.retrieveNamedListings = (req, res) => {
         if (result.length === 0) {
             return res.status(404).json({message: `No ${boardgameName} listings are available at the moment, check again later`})
         }
+        // sorts board game listings closest to further from user that requested it
         const sortedBoardgames = result.sort((a, b) => {
             const aCoordinates = a.coordinates.split(",");
             const bCoordinates = b.coordinates.split(",");
