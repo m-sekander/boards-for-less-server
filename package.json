@@ -11,7 +11,7 @@
     "rollback": "npx knex migrate:rollback",
     "seed": "npx knex seed:run",
     "seed_users": "npx knex seed:run --specific=01_users_seeder.js",
-    "seed_boardgames": "npx knex seed:run --specific=01_boardgames_seeder.js",
+    "seed_boardgames": "npx knex seed:run --specific=02_boardgames_seeder.js",
     "key": "node -e \"console.log(require('crypto').randomBytes(32).toString('hex'));\""
   },
   "author": "Moin",
