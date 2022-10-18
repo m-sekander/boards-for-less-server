@@ -2,7 +2,7 @@
 
 # Boards For Less !
 
-“Boards For Less !” is an interactive web application that connects users looking to try new 
+“Boards For Less !” is an interactive desktop web application that connects users looking to try new 
 games with users that are looking to rent them out. With autocomplete from Board Game Atlas 
 API and the map technology of Google Maps Platform API, users can use the site seamlessly.
 
