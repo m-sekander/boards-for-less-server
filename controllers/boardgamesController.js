@@ -137,10 +137,10 @@ exports.retrieve = (req, res) => {
     boardgameName = boardgameName.replaceAll("+", " ");
     
     knex("boardgames")
-    .whereNot({user_email: email})
+    // .whereNot({user_email: email})
     .where({"boardgames.name": boardgameName})
-    .join("users", "user_email", "=", "email")
-    .select("boardgames.*", "address", "coordinates")
+    // .join("users", "user_email", "=", "email")
+    // .select("boardgames.*", "address", "coordinates")
     .then((result) => {
         return res.json({email, boardgameName, message: "pls work", result})
         if (result.length === 0) {
