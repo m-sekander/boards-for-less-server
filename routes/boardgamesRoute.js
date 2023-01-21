@@ -19,6 +19,8 @@ router.get('/details/:boardgameId', authorize, boardgamesController.retrieveSpec
 
 router.get('/d/:boardgameName', authorize, boardgamesController.retrieve);
 
+router.get('/:boardgameName', authorize, boardgamesController.retrieveNamedListings);
+
 router.delete('/:boardgameId', authorize, boardgamesController.deleteSpecificListing);
 
 

@@ -105,7 +105,7 @@ exports.retrieveNamedListings = (req, res) => {
     let { boardgameName } = req.params;
     boardgameName = boardgameName.replaceAll("+", " ");
     
-    return res.send("Working...")
+    return res.json({message: "Working...", userLat, userLng})
 
     knex("boardgames")
     .whereNot({user_email: email})
@@ -130,13 +130,31 @@ exports.retrieveNamedListings = (req, res) => {
 
 exports.retrieve = (req, res) => {
     const { email } = req;
-    // const userLat = req.query.lat;
-    // const userLng = req.query.lng;
+    const userLat = req.query.lat;
+    const userLng = req.query.lng;
 
     let { boardgameName } = req.params;
-    // boardgameName = boardgameName.replaceAll("+", " ");
+    boardgameName = boardgameName.replaceAll("+", " ");
 
-    return res.json({ message: "Working?", email, boardgameName });
+    knex("boardgames")
+    .whereNot({user_email: email})
+    .where({"boardgames.name": boardgameName})
+    .join("users", "user_email", "=", "email")
+    .select("boardgames.*", "address", "coordinates")
+    .then((result) => {
+        if (result.length === 0) {
+            return res.status(404).json({message: `No ${boardgameName} listings are available at the moment, check again later`})
+        }
+        // sorts board game listings closest to further from user that requested it
+        const sortedBoardgames = result.sort((a, b) => {
+            const aCoordinates = a.coordinates.split(",");
+            const bCoordinates = b.coordinates.split(",");
+            return distCalculator(userLat, userLng, aCoordinates[0], aCoordinates[1]) - distCalculator(userLat, userLng, bCoordinates[0], bCoordinates[1]);
+        })
+        return res.json({message: `${boardgameName} listings retrieved successfully`, sortedBoardgames: sortedBoardgames.slice(0, 10)});
+    }).catch((error) => {
+        return res.status(500).json({message: `Unable to get nearby ${boardgameName} listings at the moment`, error});
+    })
 }
 
 exports.retrieveUserListings = (req, res) => {
