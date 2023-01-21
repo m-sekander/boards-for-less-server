@@ -86,6 +86,17 @@ exports.retrieveListings = (req, res) => {
     })
 }
 
+exports.retrieveNameListings = (req, res) => {
+    // const { email } = req;
+    // const userLat = req.query.lat;
+    // const userLng = req.query.lng;
+
+    let { boardgameName } = req.params;
+    boardgameName = boardgameName.replaceAll("+", " ");
+
+    return res.json({ message: "Working..." }, boardgameName);
+}
+
 exports.retrieveNamedListings = (req, res) => {
     const { email } = req;
     const userLat = req.query.lat;
@@ -93,7 +104,7 @@ exports.retrieveNamedListings = (req, res) => {
 
     let { boardgameName } = req.params;
     boardgameName = boardgameName.replaceAll("+", " ");
-
+    
     return res.send("Working...")
 
     knex("boardgames")

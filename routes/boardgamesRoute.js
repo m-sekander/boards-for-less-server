@@ -11,6 +11,7 @@ router.get('/', authorize, boardgamesController.retrieveListings);
 
 router.get('/user', authorize, boardgamesController.retrieveUserListings);
 
+router.get('/filter/:boardgameName', authorize, boardgamesController.retrieveNameListings);
 router.get('/:boardgameName', authorize, boardgamesController.retrieveNamedListings);
 
 router.get('/details/:boardgameId', authorize, boardgamesController.retrieveSpecificListing);
