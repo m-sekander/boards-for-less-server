@@ -134,15 +134,15 @@ exports.retrieve = (req, res) => {
     const userLng = req.query.lng;
     
     let { boardgameName } = req.params;
-    boardgameName = boardgameName.replaceAll("+", " ");
+    // boardgameName = boardgameName.replaceAll("+", " ");
     
     knex("boardgames")
-    // .whereNot({user_email: email})
-    .where({"boardgames.name": boardgameName})
+    .whereNot({user_email: email})
+    // .where({"boardgames.name": boardgameName})
     // .join("users", "user_email", "=", "email")
     // .select("boardgames.*", "address", "coordinates")
     .then((result) => {
-        return res.json({email, boardgameName, message: "pls work", result})
+        return res.json({result})
         if (result.length === 0) {
             return res.status(404).json({message: `No ${boardgameName} listings are available at the moment, check again later`})
         }
