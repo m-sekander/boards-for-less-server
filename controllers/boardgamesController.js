@@ -134,8 +134,8 @@ exports.retrieve = (req, res) => {
     const userLng = req.query.lng;
     
     const { boardgameName } = req.params;
-    let formattedName;
-    for (char of boardgameName) {
+    let formattedName = "";
+    for (char of boardgameName.trim()) {
         if (char === "+") {
             formattedName += " ";
         } else {
