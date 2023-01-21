@@ -134,8 +134,15 @@ exports.retrieve = (req, res) => {
     const userLng = req.query.lng;
     
     const { boardgameName } = req.params;
-    // boardgameName = boardgameName.replaceAll("+", " ");
-    const formattedName = boardgameName.replaceAll("+", " ");
+    let formattedName;
+    for (char of boardgameName) {
+        if (char === "+") {
+            formattedName += " ";
+        } else {
+            formattedName += char;
+        }
+    }
+
     
     knex("boardgames")
     .whereNot({user_email: email})
