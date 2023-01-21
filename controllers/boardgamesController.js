@@ -134,10 +134,7 @@ exports.retrieve = (req, res) => {
     const userLng = req.query.lng;
     
     let { boardgameName } = req.params;
-    // boardgameName = boardgameName.replaceAll("+", " ");
-    
-    
-    return res.json({message: "Working...", email, userLat, userLng, boardgameName})
+    boardgameName = boardgameName.replaceAll("+", " ");
     
     knex("boardgames")
     .whereNot({user_email: email})
@@ -145,6 +142,7 @@ exports.retrieve = (req, res) => {
     .join("users", "user_email", "=", "email")
     .select("boardgames.*", "address", "coordinates")
     .then((result) => {
+        return res.json({email, boardgameName, message: "pls work", result})
         if (result.length === 0) {
             return res.status(404).json({message: `No ${boardgameName} listings are available at the moment, check again later`})
         }
