@@ -94,7 +94,7 @@ exports.retrieveNameListings = (req, res) => {
     let { boardgameName } = req.params;
     boardgameName = boardgameName.replaceAll("+", " ");
 
-    return res.json({ message: `Working...`, boardgameName });
+    return res.status(400).json({ message: "Working..."});
 }
 
 exports.retrieveNamedListings = (req, res) => {
