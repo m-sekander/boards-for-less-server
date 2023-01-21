@@ -135,7 +135,7 @@ exports.retrieve = (req, res) => {
     
     const { boardgameName } = req.params;
     let formattedName = "";
-    for (char of boardgameName.trim()) {
+    for (char of boardgameName) {
         if (char === "+") {
             formattedName += " ";
         } else {
@@ -146,11 +146,10 @@ exports.retrieve = (req, res) => {
     
     knex("boardgames")
     .whereNot({user_email: email})
-    .where({"boardgames.name": boardgameName})
+    .where({"boardgames.name": formattedName})
     .join("users", "user_email", "=", "email")
     .select("boardgames.*", "address", "coordinates")
     .then((result) => {
-        return res.json({result, boardgameName, formattedName})
         if (result.length === 0) {
             return res.status(404).json({message: `No ${boardgameName} listings are available at the moment, check again later`})
         }
