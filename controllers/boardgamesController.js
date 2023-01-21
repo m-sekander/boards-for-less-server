@@ -134,11 +134,11 @@ exports.retrieve = (req, res) => {
     const userLng = req.query.lng;
     
     let { boardgameName } = req.params;
-    boardgameName = boardgameName.replaceAll("+", " ");
+    // boardgameName = boardgameName.replaceAll("+", " ");
     
     knex("boardgames")
     .whereNot({user_email: email})
-    // .where({"boardgames.name": boardgameName})
+    .where({"boardgames.name": boardgameName})
     .join("users", "user_email", "=", "email")
     .select("boardgames.*", "address", "coordinates")
     .then((result) => {
