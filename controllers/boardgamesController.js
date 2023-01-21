@@ -80,7 +80,7 @@ exports.retrieveListings = (req, res) => {
             const bCoordinates = b.coordinates.split(",");
             return distCalculator(userLat, userLng, aCoordinates[0], aCoordinates[1]) - distCalculator(userLat, userLng, bCoordinates[0], bCoordinates[1]);
         })
-        return res.json({message: "Board game listings retrieved successfully", sortedBoardgames: sortedBoardgames});
+        return res.json({message: "Board game listings retrieved successfully", sortedBoardgames});
     }).catch((error) => {
         return res.status(500).json({message: "Unable to get nearby board game listings at the moment", error});
     })
@@ -126,6 +126,17 @@ exports.retrieveNamedListings = (req, res) => {
     }).catch((error) => {
         return res.status(500).json({message: `Unable to get nearby ${boardgameName} listings at the moment`, error});
     })
+}
+
+exports.retrieve = (req, res) => {
+    const { email } = req;
+    // const userLat = req.query.lat;
+    // const userLng = req.query.lng;
+
+    let { boardgameName } = req.params;
+    // boardgameName = boardgameName.replaceAll("+", " ");
+
+    return res.json({ message: "Working?", email, boardgameName });
 }
 
 exports.retrieveUserListings = (req, res) => {
