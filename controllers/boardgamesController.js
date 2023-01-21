@@ -106,7 +106,7 @@ exports.retrieveNamedListings = (req, res) => {
     boardgameName = boardgameName.replaceAll("+", " ");
     
     return res.json({message: "Working...", userLat, userLng})
-
+    
     knex("boardgames")
     .whereNot({user_email: email})
     .where({"boardgames.name": boardgameName})
@@ -132,10 +132,13 @@ exports.retrieve = (req, res) => {
     const { email } = req;
     const userLat = req.query.lat;
     const userLng = req.query.lng;
-
+    
     let { boardgameName } = req.params;
-    boardgameName = boardgameName.replaceAll("+", " ");
-
+    // boardgameName = boardgameName.replaceAll("+", " ");
+    
+    
+    return res.json({message: "Working...", email, userLat, userLng, boardgameName})
+    
     knex("boardgames")
     .whereNot({user_email: email})
     .where({"boardgames.name": boardgameName})
