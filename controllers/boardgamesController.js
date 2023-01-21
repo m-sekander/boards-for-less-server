@@ -137,7 +137,7 @@ exports.retrieveUserListings = (req, res) => {
         if (result.length === 0) {
             return res.status(404).json({message: "User currently has no board game listings"})
         }
-        return res.json({message: "User's board game listings retrieved successfully", result});
+        return res.json({message: "Changed", result});
     }).catch((error) => {
         return res.status(500).json({message: "Unable to get user's board game listings at the moment", error});
     })
