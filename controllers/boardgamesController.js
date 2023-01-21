@@ -94,6 +94,7 @@ exports.retrieveNamedListings = (req, res) => {
     let { boardgameName } = req.params;
     boardgameName = boardgameName.replaceAll("+", " ");
 
+    return res.send("Working...")
 
     knex("boardgames")
     .whereNot({user_email: email})
