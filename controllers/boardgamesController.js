@@ -139,8 +139,8 @@ exports.retrieve = (req, res) => {
     knex("boardgames")
     .whereNot({user_email: email})
     // .where({"boardgames.name": boardgameName})
-    // .join("users", "user_email", "=", "email")
-    // .select("boardgames.*", "address", "coordinates")
+    .join("users", "user_email", "=", "email")
+    .select("boardgames.*", "address", "coordinates")
     .then((result) => {
         return res.json({result})
         if (result.length === 0) {
